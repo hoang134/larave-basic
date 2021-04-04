@@ -8,24 +8,22 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $title = 'index';
-        return view('index',[
-            'title' => $title
-        ]);
+       return view('index');
     }
-
-    public function test(Request $request)
+    public function getLogin()
     {
-       return view('test');
+        return view('login');
+
+    }  public function postLogin(Request $request)
+    {
+        $request->session()->put('login',true);
+        $request->session()->put('role',$request->role);
+        return redirect('admin');
     }
 
     public function home(Request $request)
     {
-
         return view('home');
     }
-    public function handle(Request $request)
-    {
 
-    }
 }

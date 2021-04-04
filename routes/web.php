@@ -16,8 +16,9 @@ use App\Http\Controllers\HomeController;
 
 
 
-Route::get('/',[HomeController::class,'index'])->name('index');
-Route::get('home',[HomeController::class,'home']);
-Route::post('home',[HomeController::class,'handle'])->name('handle');
-Route::get('test',[HomeController::class,'test'])->middleware('test');
-
+Route::get('home',[HomeController::class,'home'])->middleware('check.login');
+Route::get('login',[HomeController::class,'getLogin']);
+Route::post('login',[HomeController::class,'postLogin'])->name('login');
+Route::get('admin',function () {
+    return 'admin';
+})->middleware('check.role');
