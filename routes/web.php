@@ -16,9 +16,5 @@ use App\Http\Controllers\HomeController;
 
 
 
-Route::get('home',[HomeController::class,'home'])->middleware('check.login');
-Route::get('login',[HomeController::class,'getLogin']);
-Route::post('login',[HomeController::class,'postLogin'])->name('login');
-Route::get('admin',function () {
-    return 'admin';
-})->middleware('check.role');
+Route::get('index',[\App\Http\Controllers\PostController::class,'index']);
+Route::post('post/search',[\App\Http\Controllers\PostController::class,'search'])->name('post.search');
