@@ -16,5 +16,9 @@ use App\Http\Controllers\HomeController;
 
 
 
-Route::get('index',[\App\Http\Controllers\PostController::class,'index']);
-Route::post('post/search',[\App\Http\Controllers\PostController::class,'search'])->name('post.search');
+Route::get('/',[\App\Http\Controllers\PostController::class,'index'])->name('post.index');
+//Route::post('post/search',[\App\Http\Controllers\PostController::class,'search'])->name('post.search');
+Route::post('post/create',[\App\Http\Controllers\PostController::class,'create'])->name('post.create');
+Route::get('post/delete/{id}',[\App\Http\Controllers\PostController::class,'delete'])->name('post.delete');
+Route::get('post/edit/{id}',[\App\Http\Controllers\PostController::class,'edit'])->name('post.edit');
+Route::post('post/store/{id}',[\App\Http\Controllers\PostController::class,'store'])->name('post.store');

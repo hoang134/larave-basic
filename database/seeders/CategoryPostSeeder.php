@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Subject;
 use Illuminate\Database\Seeder;
 
-class SubjectSeeder extends Seeder
+class CategoryPostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +13,6 @@ class SubjectSeeder extends Seeder
      */
     public function run()
     {
-
 
     }
 }

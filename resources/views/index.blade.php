@@ -5,44 +5,80 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <title>index</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
-
+<div class="d-flex m-5">
+    <h3 style="margin: auto">Danh sách bài Post</h3>
+</div>
 <div class="container">
-    <div class=" m-5">
-        <div>
-            <h3>Danh sách bài post</h3>
-        </div>
-        <div class="input-group">
-            <form action="{{ route('post.search') }}"method="post">
-                @csrf
-            <div class="form-outline d-flex">
-                <input type="search" id="form1" class="form-control" placeholder="title" name="title">
-                <button type="submit" class="btn btn-primary ml-2">
-                    <i class="fa fa-search"></i>
-                </button>
-            </div>
-            </form>
-        </div>
-    </div>
-
     <div>
-        @foreach($posts as $post)
-            <div class="m-3" style="background-color: #ece0e0">
-                    <h5>{{ $post->title }}</h5>
-                    <span>{{ $post->content }}</span>
-                    <small>{{ $post->created_at }}</small>
+        <h3>Tạo bài viết mới</h3>
+        <form action="{{ route('post.create') }}" method="post">
+            @csrf
+            <div class="form-group">
+                <label for="title">title</label>
+                <input type="text" class="form-control" id="title" placeholder="Title" name="title">
             </div>
-
-        @endforeach
+            <div class="form-group">
+                <label for="contents">Content</label>
+                <input type="text" class="form-control" id="contents" placeholder="Content" name="contents">
+            </div>
+            <div  class="form-group">
+                <label for="category">title</label><br>
+                <select id="category" class="form-select" name="category[]" multiple >
+                    @foreach($categories as $category)
+                        <option value="{{$category->id}}">{{$category->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">title</th>
+            <th scope="col">Nội dung</th>
+            <th scope="col" width="10%">thể loại</th>
+            <th scope="col" width="20%">Thực hiện</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($posts as $post)
+            <tr>
+            <td>{{ $post->id }}</td>
+            <td>{{ $post->title }}</td>
+            <td>{{ $post->content }}</td>
+            <td>
+                 @foreach($post->categories as $category)
+                     <span>{{ $category->name }}</span><br>
+                @endforeach
+            </td>
+            <td>
+                <a class="btn btn-primary m-2" href="{{ route('post.edit',$post->id) }}"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-danger m-2" href="{{ route('post.delete',$post->id) }}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            </td>
+        </tr>
+        @endforeach
+        </tbody>
+    </table>
     {{ $posts->links() }}
+
 </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 </html>

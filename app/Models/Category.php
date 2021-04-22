@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CouserSubject extends Model
+class Category extends Model
 {
     use HasFactory;
-    public function subjects()
+    public function posts()
     {
-
+        return $this->belongsToMany(Post::class,'category_post','category_id','post_id');
     }
 }
