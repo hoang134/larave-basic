@@ -18,23 +18,38 @@
 <div class="container">
     <div>
         <h3>Tạo bài viết mới</h3>
-        <form action="{{ route('post.create') }}" method="post">
+        <form action="{{ route('post.create') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="title">title</label>
-                <input type="text" class="form-control" id="title" placeholder="Title" name="title">
+                <input type="text" class="form-control" id="title" placeholder="Title" name="title" value="{{old('title')}}">
+                @error('title')
+                    <div>
+                        <span class="text-danger">{{ $message }}</span>
+                    </div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="contents">Content</label>
-                <input type="text" class="form-control" id="contents" placeholder="Content" name="contents">
+                <input type="text" class="form-control" id="contents" placeholder="Content" name="contents" value="{{ old('contents') }}">
+                @error('contents')
+                <div>
+                    <span class="text-danger">{{ $message }}</span>
+                </div>
+                @enderror
             </div>
-            <div  class="form-group">
+            <div class="form-group">
                 <label for="category">title</label><br>
-                <select id="category" class="form-select" name="category[]" multiple >
+                <select id="category" class="form-select" name="category[]" multiple>
                     @foreach($categories as $category)
                         <option value="{{$category->id}}">{{$category->name}}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <input type="file" id="image" name="image">
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -43,6 +58,7 @@
         <thead>
         <tr>
             <th scope="col">#</th>
+            <th scope="col">image</th>
             <th scope="col">title</th>
             <th scope="col">Nội dung</th>
             <th scope="col" width="10%">thể loại</th>
@@ -52,19 +68,21 @@
         <tbody>
         @foreach($posts as $post)
             <tr>
-            <td>{{ $post->id }}</td>
-            <td>{{ $post->title }}</td>
-            <td>{{ $post->content }}</td>
-            <td>
-                 @foreach($post->categories as $category)
-                     <span>{{ $category->name }}</span><br>
-                @endforeach
-            </td>
-            <td>
-                <a class="btn btn-primary m-2" href="{{ route('post.edit',$post->id) }}"><i class="fa fa-edit"></i></a>
-                <a class="btn btn-danger m-2" href="{{ route('post.delete',$post->id) }}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-            </td>
-        </tr>
+                <td>{{ $post->id }}</td>
+                <td> <img width="125px" height="95px" src="{{$post->image ? $post->image :"" }}"> </td>
+                <td>{{ $post->title }}</td>
+                <td>{{ $post->content }}</td>
+                <td>
+                    @foreach($post->categories as $category)
+                        <span>{{ $category->name }}</span><br>
+                    @endforeach
+                </td>
+                <td>
+                    <a class="btn btn-primary m-2" href="{{ route('post.edit',$post->id) }}"><i class="fa fa-edit"></i></a>
+                    <a class="btn btn-danger m-2" href="{{ route('post.delete',$post->id) }}"><i class="fa fa-trash-o"
+                                                                                                 aria-hidden="true"></i></a>
+                </td>
+            </tr>
         @endforeach
         </tbody>
     </table>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
@@ -20,13 +21,20 @@ class PostController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create(StorePostRequest $request)
     {
         $post = Post::query()->create([
             'user_id' => 1,
             'title' => $request->title,
             'content' => $request->contents,
         ]);
+        if ($request->hasFile('image'))
+        {
+            $file = $request->image;
+            $file->move(public_path('images'),$file->getClientOriginalName());
+
+            $post->update(['image' =>'images' . '/'. $file->getClientOriginalName()]);
+        }
         $post->categories()->attach($request->category);
         return redirect()->route('post.index');
     }
